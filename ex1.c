@@ -70,11 +70,13 @@ char *strdp(char *s) /* make a duplicate of s */
 
 #define WORDSLENGTH 32767
 #define MAX_LINE 1000
-main(){
+main(int argc, char **argv){
+	//Gather data
 	char **words;
-	int i = 0;
-//	printf("Enter a corpus of text from which the random text should be generated:\n\n");
-	char delim[11] =  " ,.!?;:\"\n";
+	int i = 0;//defacto tmp variable
+	printf("Enter a corpus of text from which the random text should be generated:\n\n");
+	//char delim[11] =  " ,.!?;:\"\n";
+	char delim[1] = " ";
 	words = malloc(WORDSLENGTH * sizeof(char*));//allocate space for huge array of words
 
 	while(1){//if the input is \0 exit
@@ -91,19 +93,23 @@ main(){
 		}
 	}
 	int array_size = i;
-	/*i=0;
-	while(i<array_size){
-		printf("%s\n", words[i]);
-		i++;
-	}
-	printf("done1");*/
-	for( i=0; i < array_size-1; i++){
+	for( i=0; i < array_size-1; i++){ //put words into hash table NOTE: this is only for ngrams of length 2.
 		install(words[i], words[i+1]);
 	}
-	for( i=0; i < 10; i++){
-		NList *np = lookup(words[i]);
-		if(np == NULL){ break;}
-		printf("%s%s\n", np->name, np->defn[0]);
+	free(words); free(delim); //free stuff from gathering date
+	//Print out generated text/////////////////////
+	if(argc > 1){
+		int gen_len = atoi(argv[1]); //first args is the length of generated text (counting space between words to be exact)
+		char *seed = "the"; //TODO randomize this
+		if(argc > 2){// 2nd args is the word seed
+			seed = argv[2];
+		}
+		for(i = 0; i<gen_len; i++){
+			printf("%s ", seed); //print a word
+			NList *np = lookup(seed);//lookup word
+			seed = np->defn[rand() % np->defn_size];//choose a new one randomly from those we have seen follow it. B/c even duplicates are added to this list, the results are proportionally probabalistic to the sample
+		}
+
 	}
 	return 0;
 }
