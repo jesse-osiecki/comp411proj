@@ -21,7 +21,7 @@ unsigned hash(char *s)
 {
 	unsigned hashval;
 	for (hashval = 0; *s != '\0'; s++)
-	  hashval = *s + 31 * hashval;
+		hashval = *s + 31 * hashval;
 	return hashval % HASHSIZE;
 }
 
@@ -31,7 +31,7 @@ NList *lookup(char *s)
 	NList *np;
 	for (np = hashtab[hash(s)]; np != NULL; np = np->next)
 		if (strcmp(s, np->name) == 0)
-		  return np; /* found */
+			return np; /* found */
 	return NULL; /* not found */
 }
 
@@ -43,16 +43,16 @@ NList *install(char *name, char *defn)
 	if ((np = lookup(name)) == NULL) { /* not found */
 		np = (struct nlist *) malloc(sizeof(*np));
 		if (np == NULL || (np->name = strdp(name)) == NULL)
-		  return NULL;
+			return NULL;
 		hashval = hash(name);
 		np->next = hashtab[hashval];
 		hashtab[hashval] = np;
 		np->defn = malloc(CHAINSIZE * sizeof(char*));
 		np->defn_size = 0;
 	}//else /* already there /////*/
-	 //   free((void *) np->defn); /*free previous defn */
+	//   free((void *) np->defn); /*free previous defn */
 	if((np->defn[np->defn_size] = strdp(defn)) == NULL)//Input was null
-	   return NULL;
+		return NULL;
 	else
 		np->defn_size++; //adding string to list succeeded to add one to size
 	return np;
@@ -63,7 +63,7 @@ char *strdp(char *s) /* make a duplicate of s */
 	char *p;
 	p = (char *) malloc(strlen(s)+1); /* +1 for ’\0’ */
 	if (p != NULL)
-	   strcpy(p, s);
+		strcpy(p, s);
 	return p;
 }
 
@@ -95,7 +95,7 @@ main(int argc, char **argv){
 			words[i] = (char *) malloc((strlen(pch)+1));
 			words[i] = pch;
 			i++;
-		    pch = strtok(NULL, delim);//I find this weird, however it causes pch to return the next token succesively
+			pch = strtok(NULL, delim);//I find this weird, however it causes pch to return the next token succesively
 		}
 	}
 	int array_size = i;
@@ -123,7 +123,7 @@ main(int argc, char **argv){
 		}
 		else{// a word without any elements to succeed it has been found. This is usually rare, but in small data sets of certain output length is likely to happen.
 			return_code = 1;
-			//break;
+			break;
 		}
 	}
 	printf("\n");
