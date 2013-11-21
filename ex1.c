@@ -4,7 +4,7 @@
 #include <string.h>
 char *strdp(char *); //headers
 #define HASHSIZE 32767
-#define CHAINSIZE 1000
+#define CHAINSIZE 32767
 typedef struct nlist { /* table entry: */
 	struct nlist *next; /* next entry in chain */
 	char *name; /* defined name */
@@ -69,8 +69,9 @@ char *strdp(char *s) /* make a duplicate of s */
 
 
 #define WORDSLENGTH 32767
-#define MAX_LINE 1000
+#define MAX_LINE 32767
 main(int argc, char **argv){
+	int return_code = 0;
 	//Gather data
 	char **words;
 	int i = 0;//defacto tmp variable
@@ -106,10 +107,16 @@ main(int argc, char **argv){
 		}
 		for(i = 0; i<gen_len; i++){
 			printf("%s ", seed); //print a word
-			NList *np = lookup(seed);//lookup word
-			seed = np->defn[rand() % np->defn_size];//choose a new one randomly from those we have seen follow it. B/c even duplicates are added to this list, the results are proportionally probabalistic to the sample
+			NList *np;
+		       	if( (np = lookup(seed)) != NULL){//lookup word
+				seed = np->defn[rand() % np->defn_size];//choose a new one randomly from those we have seen follow it. B/c even duplicates are added to this list, the results are proportionally probabalistic to the sample
+			}
+			else{// a word without any elements to succeed it has been found. This is usually rare, but in small data sets of certain output length is likely to happen.
+				return_code = 1;
+				break;
+			}
 		}
 		printf("\n");
 	}
-	return 0;
+	return return_code;
 }
