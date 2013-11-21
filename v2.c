@@ -70,8 +70,8 @@ char *strdp(char *s) /* make a duplicate of s */
 /////////////////////////Dictionary End
 
 
-#define WORDSLENGTH 32767
-//#define WORDSLENGTH 2147483647
+//#define WORDSLENGTH 32767
+#define WORDSLENGTH 2147483647
 #define MAX_LINE 32767
 //#define MAX_LINE 2147483647
 
@@ -123,7 +123,7 @@ main(int argc, char **argv){
 		}
 		else{// a word without any elements to succeed it has been found. This is usually rare, but in small data sets of certain output length is likely to happen.
 			return_code = 1;
-			break;
+			//break;
 		}
 	}
 	printf("\n");
