@@ -71,7 +71,8 @@ char *strdp(char *s) /* make a duplicate of s */
 
 
 //#define WORDSLENGTH 32767
-#define WORDSLENGTH 2147483647
+//#define WORDSLENGTH 2147483647
+#define WORDSLENGTH 1000000
 #define MAX_LINE 32767
 //#define MAX_LINE 2147483647
 
